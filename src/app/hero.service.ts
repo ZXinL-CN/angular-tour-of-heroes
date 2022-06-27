@@ -3,14 +3,22 @@ import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
 
-  constructor(private messageService: MessageService) { }
-  getHeroes(): Observable<Hero[]>{
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService,
+  ) { }
+  private heroesUrl = 'api/heroes';  // URL to web api
+  private log(message: string) {
+    this.messageService.add(`HeroService: ${message}`);
+  }
+  getHeroes(): Observable<Hero[]> {
     const heroes = of(HEROES)
     this.messageService.add('HeroesService: fetched heroes');
     return heroes;
